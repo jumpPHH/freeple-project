@@ -151,11 +151,9 @@ $(function() {
 			<div class="col">
 				<a href="" class="btn d-grid" style="text-align: left"><strong>약관 및 정책</strong></a>
 			</div>
-		</div>다시보내줄게
 
-	</div>ㄴㅇㄹㄴㄹ
 				
-			버그버그22222222222222
+			버그버ㄱㅂㅈㄱㅂㅈ
 	<div class="rightSideBar"></div>
 </div>
 		
