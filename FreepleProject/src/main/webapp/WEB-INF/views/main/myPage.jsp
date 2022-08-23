@@ -152,7 +152,7 @@ $(function() {
 				<a href="" class="btn d-grid" style="text-align: left"><strong>약관 및 정책</strong></a>
 			</div>
 		</div>
-	<button>ㅗㅗㅗㅗㅗㅗ</button>		
+	<button>ㅗㅗㅗㅗㅗㅗ</button>		ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁ
 	</div>
 	<div class="rightSideBar"></div>
 </div>
