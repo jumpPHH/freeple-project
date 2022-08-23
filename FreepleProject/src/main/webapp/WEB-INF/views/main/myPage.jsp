@@ -152,7 +152,7 @@ $(function() {
 				<a href="" class="btn d-grid" style="text-align: left"><strong>약관 및 정책</strong></a>
 			</div>
 				
-			버그버그222
+			버그버그22222222222222
 	</div>
 	<div class="rightSideBar"></div>
 </div>
