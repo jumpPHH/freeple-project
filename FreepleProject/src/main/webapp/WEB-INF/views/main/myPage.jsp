@@ -151,7 +151,7 @@ $(function() {
 			<div class="col">
 				<a href="" class="btn d-grid" style="text-align: left"><strong>약관 및 정책</strong></a>
 			</div>
-		</div>
+		</div>다시보내줄게
 	<button>ㅗㅗㅗㅗㅗㅗ</button>		ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁ
 	</div>
 	<div class="rightSideBar"></div>
