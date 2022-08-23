@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.freep.mapper.FreepRestSQLMapper">
+
+	<!-- 리뷰 좋아요 관련 테이블 쿼리 관련 -->
+	
+	<insert id="insertReviewLike">
+		INSERT INTO FP_FreepReviewLike VALUES(
+		  	FP_FreepReviewLike_seq.nextval, 
+		  	#{mb_no},
+		  	#{freep_no},
+		  	#{review_no},
+		  	SYSDATE
+		)
+	</insert>
+	
+	<delete id="deleteReviewLike">
+		DELETE FROM FP_FreepReviewLike 
+		WHERE mb_no = #{mb_no}  
+		AND review_no = #{review_no}
+	</delete>
+	
+	<select id="selectCountReviewLikeByFreepNo" resultType="int">
+		SELECT COUNT(*) FROM FP_FreepReviewLike
+		WHERE review_no = #{review_no}
+		ORDER BY review_like_no DESC
+	</select>
+
+	<select id="selectCountReviewLikeByReviewNoAndMbNo" resultType="int">
+		SELECT COUNT(*)
+		FROM FP_FreepReviewLike
+		WHERE review_no = #{review_no}
+		AND mb_no = #{mb_no}
+		ORDER BY review_like_no DESC
+	</select>
+	
+	<!--결제 모달 관련 쿼리-->
+	<select id="selectAllJoinDateByFreepNo" resultType="Date">
+		SELECT PAYMENT_FREEPJOIN_DATE FROM FP_Payment WHERE FREEP_NO = #{freep_no}
+	</select>
+	
+	<select id="selectAllCouponByMemberNo" resultType="com.sg.freeple.vo.FP_MemberCouponVo">
+		SELECT * FROM FP_MEMBERCOUPON WHERE MB_NO = #{mb_no} AND COUPON_IS = 'Y'
+	</select>
+	
+	<select id="selectOneCouponByCouponNo" resultType="com.sg.freeple.vo.FP_MemberCouponVo">
+		SELECT * FROM FP_MEMBERCOUPON WHERE coupon_no=#{coupon_no}
+	</select>
+	
+	<insert id="insertFreepReviewReply">
+		INSERT INTO FP_FreepReviewReply VALUES(
+			FP_FreepReviewReply_seq.nextval,
+			#{review_no},
+			#{freep_no},
+			#{mb_no},
+			#{comment_content},
+			sysdate
+		)
+	</insert>
+
+</mapper>

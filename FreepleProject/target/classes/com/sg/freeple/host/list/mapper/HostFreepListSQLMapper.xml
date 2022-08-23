@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.host.list.mapper.HostFreepListSQLMapper">
+	
+	<!-- 호스트 프립 등록-> 프립 목록 출력 쿼리 -->
+	<select id="selectHostFreepList" resultType="com.sg.freeple.vo.FP_FreepVo">
+		SELECT ff.* 
+		FROM FP_MEMBER fm , FP_FREEP ff 
+		WHERE fm.MB_NO = ff.MB_NO
+		<if test="searchType != null and  searchWord != null">
+			<choose>
+				<when test="searchType == 'title'">
+					AND ff.freep_title LIKE '%' || #{searchWord} || '%'
+				</when>
+				
+				<when test="searchType == 'content'">
+					AND ff.freep_content LIKE '%' || #{searchWord} || '%'
+				</when>
+			</choose>
+		</if>
+		AND fm.MB_NO = #{mb_no} 
+		ORDER BY ff.freep_no DESC		
+	</select>
+	
+	<!-- 호스트 프립 등록-> 프립 목록(이미지) 출력 쿼리 -->
+	<select id="selectHostFreepImageList" resultType="com.sg.freeple.vo.FP_FreepImageVo">
+	  SELECT * FROM FP_FREEPIMAGE WHERE FREEP_NO = #{freep_no} ORDER BY freep_image_no DESC
+	</select>
+	
+	<!-- 호스트 프립 등록-> 이미지의 갯수 출력 쿼리 -->
+	<select id="selectHostFreepImageCount" resultType="int">
+	  SELECT COUNT(*) FROM FP_FREEPIMAGE WHERE FREEP_NO = #{freep_no} ORDER BY freep_image_no DESC 
+	</select>
+	
+	<select id="selectGetHostFreepNo" resultType="com.sg.freeple.vo.FP_FreepVo">
+	  SELECT FREEP_NO FROM FP_FREEP WHERE mb_no = #{mb_no} ORDER BY freep_no DESC
+	</select>
+	
+	<!-- 호스트 프립 등록-> 프립 목록(프립 갯수) 출력 쿼리-->
+	<select id="selectHostFreepListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM FP_MEMBER fm , FP_FREEP ff 
+		WHERE fm.MB_NO = ff.MB_NO
+		<if test="searchType != null and  searchWord != null">
+			<choose>
+				<when test="searchType == 'title'">
+					AND ff.freep_title LIKE '%' || #{searchWord} || '%'
+				</when>
+				
+				<when test="searchType == 'content'">
+					AND ff.freep_content LIKE '%' || #{searchWord} || '%'
+				</when>
+			</choose>
+		</if>
+		AND fm.MB_NO = #{mb_no}
+	</select>
+	
+	<select id="selectThumbnail" resultType="com.sg.freeple.vo.FP_FreepImageVo">
+		SELECT t2.* FROM (
+			  SELECT t1.* , ROWNUM AS rnum FROM(
+				SELECT ff2.* 
+				FROM FP_FREEP ff , FP_MEMBER fm , FP_FREEPIMAGE ff2
+				WHERE ff.MB_NO = fm.MB_NO  
+				AND ff.FREEP_NO = ff2.FREEP_NO
+				AND fm.MB_NO = #{mb_no}
+				AND ff2.FREEP_NO = #{freep_no}
+				<if test="searchType != null and  searchWord != null">
+					<choose>
+						<when test="searchType == 'title'">
+							AND ff.freep_title LIKE '%' || #{searchWord} || '%'
+						</when>
+						
+						<when test="searchType == 'content'">
+							AND ff.freep_content LIKE '%' || #{searchWord} || '%'
+						</when>
+					</choose>
+				</if> 
+				ORDER BY ff2.freep_image_no DESC
+			  )	t1
+			)t2 
+			WHERE t2.rnum = 1
+	</select>
+	
+</mapper>

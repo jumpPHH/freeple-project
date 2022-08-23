@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.review.mapper.ReviewSQLMapper">
+	<select id="createReviewPk" resultType="int">
+		SELECT FP_Freepreview_seq.nextval From dual
+	</select>
+		
+	<insert id="insertReview">
+		INSERT INTO FP_FREEPREVIEW VALUES(
+			#{review_no},
+			1,
+			#{mb_no},
+			1,
+			#{comment_content},
+			SYSDATE
+		)
+	</insert>
+	
+	<insert id="insertReviewImage">
+		INSERT INTO FP_FreepReviewImage VALUES(
+			FP_FreepReviewImage_seq.nextval,
+			#{review_no},
+			2,
+			#{review_image_link},
+			#{review_image_original_filename}
+		)
+	</insert>
+	 
+	 <select id="selectMemberByNo" resultType="com.sg.freeple.vo.FP_MemberVo">
+	  select * 
+	  from FP_Member
+	  WHERE mb_no = #{mb_no}
+	 </select>
+	 
+	<select id="selectReviewByNo" resultType="com.sg.freeple.vo.FP_FreepReviewVo">
+		SELECT *
+		FROM FP_FreepReview
+		WHERE review_no = #{review_no}
+	</select>
+	
+	<select id="selectImageByNo" resultType="com.sg.freeple.vo.FP_FreepReviewImageVo">
+		SELECT *
+		FROM FP_FreepReviewImage
+		WHERE review_no = #{review_no}
+	</select>
+	
+	<select id="selectReviewAll" resultType="com.sg.freeple.vo.FP_FreepReviewVo">
+		SELECT * FROM FP_FreepReview ORDER BY review_no DESC
+	</select>
+
+	<select id="selectReviewImageAll" resultType="com.sg.freeple.vo.FP_FreepReviewImageVo">
+		SELECT * FROM FP_FreepReviewImage ORDER BY review_image_no DESC
+	</select>
+	
+	
+	<delete id="deleteMyReviewByNo">
+		DELETE FROM FP_FreepReview WHERE review_no = #{review_no}
+	</delete>
+	
+	<delete id="deleteReviewImageByReviewNo">
+		DELETE FROM FP_FreepReviewImage WHERE review_no = #{review_no}
+	</delete>
+	
+	<update id="updateReviewData">
+		UPDATE FP_FreepReview 
+		SET comment_content = #{comment_content} 
+		WHERE review_no = #{review_no}		
+	</update>
+	
+	<update id="updateReviewImageData">
+		UPDATE FP_FreepReviewImage 
+		SET review_image_link = #{review_image_link} , review_image_original_filename = #{review_image_original_filename}
+		WHERE review_no = #{review_no}	
+	</update>
+	
+	
+	<delete id="deleteReviewImageByNo">
+		DELETE FROM FP_FREEPREVIEWIMAGE WHERE review_image_no = #{review_image_no}
+	</delete>
+	
+	
+	
+</mapper>

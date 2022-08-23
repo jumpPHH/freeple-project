@@ -1,0 +1,303 @@
+@charset "UTF-8";
+
+ 	  .container {
+	  position: relative;
+	  padding: 0px;
+	 }
+	
+	 .containerText01 {
+	  position: absolute;
+	  color: white;
+	  top: 60px;
+	  left: 200px;
+	 }
+	  .containerText02 {
+	  position: absolute;
+	  color: white;
+	  top: 110px;
+	  left: 200px;
+	  font-weight: bold;
+	 }
+	  .containerText03 {
+	  position: absolute;
+	  color: white;
+	  top: 175px;
+	  left: 200px;
+	  font-size: 13px;
+	 }
+	  .containerText04 {
+	  position: absolute;
+	  color: white;
+	  top: 200px;
+	  left: 200px;
+	  font-size: 13px;
+	 }
+	 
+	  .btn-primary01 {
+	  position: absolute;
+	  color: white;
+	  top: 250px;
+	  left: 190px;
+	  font-size: 15px;
+	  font-weight: bold;
+	  
+	  --bs-btn-color: #fff;
+	  --bs-btn-bg: #0d6efd;
+	  --bs-btn-border-color: #0d6efd;
+	  --bs-btn-hover-color: #fff;
+	  --bs-btn-hover-bg: #0b5ed7;
+	  --bs-btn-hover-border-color: #0a58ca;
+	  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+	  --bs-btn-active-color: #fff;
+	  --bs-btn-active-bg: #0a58ca;
+	  --bs-btn-active-border-color: #0a53be;
+	  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	  --bs-btn-disabled-color: #fff;
+	  --bs-btn-disabled-bg: #0d6efd;
+	  --bs-btn-disabled-border-color: #0d6efd;
+	}
+	
+	.hNqpkK {
+	    font-size: 35px;
+	    line-height: 1.36;
+	    letter-spacing: -1px;
+	    display: block;
+	    text-align: center;
+	}
+	
+	.faJPFm {
+	    margin-top: 24px;
+	    font-size: 15px;
+	    line-height: 1.7;
+	    letter-spacing: -0.45px;
+	    color: rgb(102, 102, 102);
+	    display: block;
+	    text-align: center;
+	}
+	
+	.igYddE {
+    font-size: 55px;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: -2px;
+    text-align: center;
+	}
+	
+	.lfJVwF {
+    font-size: 16px;
+    padding-top: 10px;
+    letter-spacing: -0.4px;
+    text-align: center;
+	}
+	
+	.fjtsao {
+    max-width: 1600px;
+    border-bottom: 1px solid rgb(221, 221, 221);
+    margin: 0px auto;
+    width: 70%;
+    text-align: center;
+	}
+	
+	.geJNTv {
+    padding-bottom: 30px;
+    display: block;
+    font-size: 47px;
+    font-weight: 300;
+    line-height: 0.7;
+    letter-spacing: -0.33px;
+    color: rgb(1, 76, 156);
+    padding-right: 10px;
+    text-align: center;
+    }
+    
+    .bOpkNx {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: rgb(51, 51, 51);
+    padding-bottom: 6px;
+    text-align: center;
+	}
+	
+	.gdcTAa {   
+    font-size: 15px;
+    line-height: 1.7;
+    letter-spacing: -0.3px;
+    color: rgb(102, 102, 102);
+    padding-left: 2px;
+    text-align: center;
+	}
+	
+	.btn-primary02 {
+	  color: white;
+	  font-size: 15px;
+	  font-weight: bold;
+	 
+	  --bs-btn-color: #fff;
+	  --bs-btn-bg: #0d6efd;
+	  --bs-btn-border-color: #0d6efd;
+	  --bs-btn-hover-color: #fff;
+	  --bs-btn-hover-bg: #0b5ed7;
+	  --bs-btn-hover-border-color: #0a58ca;
+	  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+	  --bs-btn-active-color: #fff;
+	  --bs-btn-active-bg: #0a58ca;
+	  --bs-btn-active-border-color: #0a53be;
+	  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	  --bs-btn-disabled-color: #fff;
+	  --bs-btn-disabled-bg: #0d6efd;
+	  --bs-btn-disabled-border-color: #0d6efd;
+	}
+	
+	.fVhLJp {
+	    display: inline-block;
+	    width: 60%;
+    	text-align: center;
+    	margin-left: 40px;
+	}
+	
+	.hOSnWD {
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: -0.45px;
+    text-align: center;
+    color: rgb(51, 51, 51);
+    padding-bottom: 11px;
+	}
+	
+	.iZkIHR {
+    display: flex;
+    width: 50px;
+    height: 10px;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: 80px;
+    margin-left: 30px;
+	}
+	
+	.hIZrvy {
+    font-size: 15px;
+    line-height: 1.7;
+    letter-spacing: -0.4px;
+    margin: 0px auto;
+    color: rgb(102, 102, 102);
+    text-align: center;
+	}
+	
+	.gZykYN { /*프립과 함께한 호스트들 사진*/
+    width: 80%;
+    margin-left: 30px;
+	}
+	
+	.cvwMAO { /*프립과 함께한 호스트들 사진 안에 들어가는 글 틀*/
+    position: relative;
+    width: 100%;
+	}
+	
+	.dSgcAI { /*프립과 함께한 호스트들 사진 안에 들어가는 글*/
+    position: absolute;
+    padding: 10px;
+    text-align: center;
+    color: rgb(255, 248, 248);
+    bottom: 2px;
+    border-radius: 3px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0));
+    left: 0px;
+    right: 0px;
+    }
+    
+    .cIKEJO { /*프립과 함께한 호스트들 사진 안에 들어가는 글*/
+    line-height: 1.5;
+    letter-spacing: -0.33px;
+    font-weight: 500;
+    text-align: center;
+    font-size: 15px;
+	}
+	
+	.ZEtHU { /*프립과 함께한 호스트들 사진 안에 들어가는 글 이름*/
+    margin-top: 9px;
+    font-size: 12px;
+    line-height: 1.42;
+    letter-spacing: -0.33px;
+    text-align: center;
+	}
+	
+	.eSynTx { /*FAQ*/
+    font-size: 35px;
+    text-align: center;
+    margin-bottom: 30px;
+	}
+	
+	.fqaline {
+	padding-bottom: 30px;
+    border-bottom: 3px solid rgb(51, 51, 51);
+    color: rgb(51, 51, 51);
+    margin-bottom: 30px;
+	}
+	
+	.jghvoH { /*하단 이미지*/
+    max-height: 700px;
+    max-width: 1000px;
+    padding-left: 65px;
+    margin: 0px auto;
+    overflow: hidden;
+	}
+	 
+    .sessionComplte {
+    display: block;
+    font-size: 13px;
+    letter-spacing: -0.4px;
+    color: #939393515151;
+    font-weight: bold;
+    padding-bottom: 6px;
+    text-align: center;
+    padding-bottom: 0px; 
+    margin-bottom: 0px;
+    }
+    
+    .fYPNFX {
+    display: inline-block;
+    padding: 20px 50px 50px; 
+    border-right: 1px solid rgb(221, 221, 221);
+    border-bottom: 1px solid rgb(221, 221, 221);
+    
+	}
+	.eHwPsX {
+    display: inline-block;
+    padding: 20px 50px 50px;
+    border-bottom: 1px solid rgb(221, 221, 221);
+	}
+	
+	.guveUJ {
+    width: 100%;
+    background-color: rgb(246, 246, 246);
+	}
+	
+	.cvGJAL {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.25;
+    color: rgb(51, 51, 51);
+    padding-bottom: 20px;
+	}
+	
+	.boldfont {
+	text-decoration: none;
+	color: black; 
+	font-weight: bold;
+	}
+	
+	.eYIWqJ {
+    display: block;
+    font-size: 11px;
+    line-height: 1.36;
+    color: rgb(153, 153, 153);
+    padding-bottom: 5px;
+	}
+	
+
+	
+	
+
+    

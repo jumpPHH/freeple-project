@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.freep.mapper.FreepSQLMapper">
+	
+	<select id="selectAllCategory" resultType="com.sg.freeple.vo.FP_FreepCategoryVo">
+		SELECT * FROM FP_FreepCategory ORDER BY freep_ctg_no asc
+	</select>
+	
+	<select id="selectCategoryNameByNo" resultType="String">
+		SELECT FREEP_CTG_NAME FROM FP_FreepCategory WHERE FREEP_CTG_NO =#{freep_ctg_no}
+	</select>
+
+	<select id="countFreepByCategoryNoOrSearchWord" resultType="int">
+		SELECT count(*) FROM FP_FREEP
+		<choose>
+			<when test="freep_ctg_no>0">
+				WHERE freep_ctg_no = #{freep_ctg_no}
+			</when>
+			<when test="searchWord!=''">
+				WHERE freep_title like '%'||#{searchWord}||'%'
+			</when>
+		</choose>
+	</select>
+	
+	<!-- 일단 프립 작성날짜 기준으로. 차후 스케줄러 성공하면 개시날짜로 -->
+	<select id="selectFreepByMultipleCase" resultType="com.sg.freeple.vo.FP_FreepVo">
+		SELECT * FROM 
+		(
+			SELECT rownum r1,t1.* FROM
+				(select
+					(select count(*)
+					from FP_FREEPREVIEW fr1
+					where fr1.freep_no = f.freep_no) countReView,
+					
+					(select NVL(avg(STAR_STATUS),0)
+					from FP_FREEPREVIEW fr1
+					where fr1.freep_no = f.freep_no) avgStar,
+					
+					f.*
+				from FP_FREEP f
+				<if test="freep_ctg_no>0">
+				WHERE f.FREEP_CTG_NO =#{freep_ctg_no}
+				</if>
+				<if test="searchWord!=''">
+				WHERE f.FREEP_TITLE LIKE '%'||#{searchWord}||'%'
+				</if>
+				<if test="filterInOrderType=='inOrderMoreReview'">
+				ORDER BY countReView desc, avgStar desc) t1) t2
+				</if>
+				<if test="filterInOrderType=='inOrderHigherAvgStar'">
+				ORDER BY avgStar desc, countReView desc) t1) t2
+				</if>
+				<if test="filterInOrderType=='inOrderHigherPrice'">
+				ORDER BY f.FREEP_PRICE desc, countReView desc) t1) t2
+				</if>
+				<if test="filterInOrderType=='inOrderLowerPrice'">
+				ORDER BY f.FREEP_PRICE asc, countReView desc) t1) t2
+				</if>
+				<if test="filterInOrderType=='inOrderRecentDate'">
+				ORDER BY f.FREEP_WRITEDATE desc, countReView desc) t1) t2
+				</if>
+		<![CDATA[
+		WHERE r1>=#{pageNum}*20-19 AND r1<=#{pageNum}*20
+		]]>
+		ORDER BY r1 ASC		
+	</select>
+
+	<select id="selectFreepMainImageByFreepNo" resultType="com.sg.freeple.vo.FP_FreepImageVo">
+		SELECT * FROM(
+			SELECT ROWNUM RN1,FI1.*
+			FROM FP_FreepImage FI1
+			WHERE freep_no=#{freep_no}
+			ORDER BY FREEP_IMAGE_NO asc
+			)
+		WHERE RN1=1
+	</select>
+	
+	<select id="avgStarFromFreepReviewByFreepNo" resultType="double">
+		SELECT avg(STAR_STATUS) FROM FP_FreepReview WHERE FREEP_NO=#{freep_no}
+	</select>
+
+	<select id="countFreepReviewByFreepNo" resultType="int">	
+		SELECT count(*) FROM FP_FreepReview WHERE FREEP_NO =#{freep_no}
+	</select>
+
+	<select id="selectFreepImageByFreepNo" resultType="com.sg.freeple.vo.FP_FreepImageVo">
+		SELECT * FROM FP_FreepImage WHERE freep_no = #{freep_no}
+	</select>
+	
+	<select id="selectFreepByFreepNo" resultType="com.sg.freeple.vo.FP_FreepVo">
+		SELECT * FROM FP_FREEP WHERE FREEP_NO = #{freep_no}
+	</select>
+	
+	<select id="selectFreepHostInfo" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * FROM FP_MEMBER fm, FP_FREEP ff  
+		WHERE fm.MB_NO = ff.MB_NO 
+		AND ff.FREEP_NO = #{freep_no}
+	</select>
+	
+	<select id="selectFreepReviewAllData" resultType="com.sg.freeple.vo.FreepReviewAllInfoVo">
+		SELECT
+		ff.review_no, 
+		ff.MB_NO ,
+		ff.FREEP_NO , 
+		ff.COMMENT_CONTENT ,
+		ff.STAR_STATUS , 
+		fm.MB_NICK , 
+		fm.MB_IMAGE_LINK , 
+		ff.COMMENT_WRITEDATE  
+		FROM 
+		FP_FreepReview ff , 
+		FP_MEMBER fm
+		WHERE ff.MB_NO = fm.MB_NO	
+		AND ff.FREEP_NO  = #{freep_no}
+		ORDER BY ff.REVIEW_NO DESC
+	</select>
+	
+	<select id="selectReviewCount" resultType="int">
+		SELECT COUNT(*)  
+		FROM FP_FREEPREVIEW 	
+		WHERE  FREEP_NO = #{freep_no}
+	</select>
+	
+	<select id="selectFreepReviewImageList" resultType="com.sg.freeple.vo.FP_FreepReviewImageVo">
+		SELECT * FROM FP_FREEPREVIEWIMAGE 
+		WHERE REVIEW_NO = #{review_no}
+		ORDER BY review_image_no DESC
+	</select>
+	
+	<select id="selectFreepReviewImageThumbnail" resultType="com.sg.freeple.vo.FP_FreepReviewImageVo">
+		SELECT t2.* FROM(
+			SELECT t1.* , ROWNUM AS rnum FROM(
+				SELECT ff.* FROM FP_FREEPREVIEWIMAGE ff , FP_FREEPREVIEW ff2 
+				WHERE ff.REVIEW_NO = ff2.REVIEW_NO
+				AND ff2.FREEP_NO = #{freep_no}
+				AND ff.REVIEW_NO = #{review_no}
+				ORDER BY review_image_no DESC
+			)t1
+		)t2
+		WHERE rnum = 1
+	</select>
+	
+	<select id="starFromFreepReviewByReviewNo" resultType="double">
+		SELECT STAR_STATUS FROM FP_FreepReview WHERE review_no = #{review_no}
+	</select>
+	
+	<select id="selectFreepSessionUserInfo" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * 
+		FROM FP_MEMBER fm , FP_FREEP ff 
+		WHERE fm.MB_NO = ff.MB_NO
+		AND ff.FREEP_NO = #{freep_no} 
+		AND fm.MB_NO = #{mb_no}
+	</select>	
+	
+	<select id="selectFreepReviewReplyData" resultType="com.sg.freeple.vo.FP_FreepReviewReplyVo">
+		SELECT rr.* 
+		FROM FP_FREEPREVIEW rv ,FP_FREEPREVIEWREPLY rr
+		WHERE rv.REVIEW_NO = rr.REVIEW_NO
+		AND rv.FREEP_NO = #{freep_no}
+		AND rv.REVIEW_NO = #{review_no}
+		AND rr.MB_NO = #{mb_no}
+	</select>
+	
+	
+	
+	
+	<select id="selectFreepPriceByFreepNo" resultType="int">
+		SELECT FREEP_PRICE FROM FP_FREEP WHERE FREEP_NO =#{freep_no}
+	</select>
+	
+	<select id="selectPaymentSequenceNumber" resultType="int">
+		select FP_PAYMENT_seq.nextval From Dual
+	</select>
+	
+	<insert id="insertPaymentByReservedFreep">
+		INSERT INTO FP_PAYMENT values(
+			#{payment_no},
+			#{freep_no},
+			#{mb_no},
+			#{coupon_no},
+			#{payment_method},
+			#{payment_freepJoin_date},
+			sysdate
+		)
+	</insert>
+
+	<insert id="insertAcceptByReservedFreep">
+		INSERT INTO FP_ACCEPT values(
+			FP_ACCEPT_seq.nextval,
+			#{payment_no},
+			'N',
+			null,
+			sysdate
+		)
+	</insert>
+
+	<insert id="insertSendMoney">
+		INSERT INTO FP_SENDMONEY values(
+			FP_SENDMONEY_seq.nextval,
+			#{payment_no},
+			#{sendMoney_sender},
+			#{sendMoney_depositor},
+			#{sendMoney_money},
+			sysdate
+		)
+	</insert>
+	
+	<select id="selectPaymentBeforJoinByMemberNo" resultType="com.sg.freeple.vo.FP_PaymentVo">
+		SELECT * FROM FP_PAYMENT fp
+		WHERE MB_NO = #{mb_no}
+		<![CDATA[
+		AND PAYMENT_FREEPJOIN_DATE > sysdate
+		]]>
+	</select>
+	
+	<select id="selectPaymentAfterJoinByMemberNo" resultType="com.sg.freeple.vo.FP_PaymentVo">
+		SELECT * FROM FP_PAYMENT fp
+		WHERE MB_NO = #{mb_no}
+		<![CDATA[
+		AND PAYMENT_FREEPJOIN_DATE < sysdate
+		]]>
+	</select>
+
+	
+</mapper>

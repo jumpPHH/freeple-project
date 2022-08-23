@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.feed.mapper.FeedRestSQLMapper">
+	
+	<insert id="insertFeedComment">
+		INSERT INTO FP_FreepFeedComment VALUES(
+			FP_FreepFeedComment_seq.nextval,
+			#{review_no},
+			1,
+			#{member_no},
+			#{feed_comment},
+			SYSDATE					
+		)
+	</insert>
+	
+	<select id="selectFeedCommentList" resultType="com.sg.freeple.vo.FP_FreepFeedCommentVo">
+		SELECT * FROM FP_FreepFeedComment 
+		WHERE review_no = #{review_no}
+		ORDER BY comment_no ASC	
+	</select>
+
+	<delete id="deleteFeedComment">
+		DELETE FROM FP_FreepFeedComment WHERE comment_no = #{comment_no}
+	</delete>
+
+	<update id="updateFeedComment">
+		UPDATE FP_FreepFeedComment 
+		SET feed_comment = #{feed_comment}
+		WHERE comment_no = #{comment_no} 
+	</update>
+
+	<select id="selectMemberByNo" resultType="com.sg.freeple.vo.FP_MemberVo">
+	  select * 
+	  from FP_Member
+	  WHERE mb_no = #{mb_no}
+	 </select>
+	 
+	 <select id="selectCountById" resultType="int">
+		SELECT COUNT(*) FROM FP_MEMBER WHERE mb_id = #{mbId}
+	</select>
+	 
+
+</mapper>
+

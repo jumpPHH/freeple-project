@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sg.freeple.member.login.mapper.LoginSQLMapper">
+	
+	<!--로그인 ID,PW를 찾는 쿼리-->
+	<select id="selectByIdAndPw" resultType="com.sg.freeple.vo.FP_MemberVo"> 
+		SELECT * 
+		FROM FP_Member fm , FP_MEMBERMAILAUTH fma
+		WHERE fm.MB_NO = fma.MB_NO
+		AND fm.MB_id = #{mb_id} 
+		AND fm.MB_pw = #{mb_pw}
+		AND	fma.AUTH_COMPLETE = 'O'
+	</select>
+	
+	<!--@아이디 찾기 관련 쿼리 -->
+	
+	<!--입력한 이메일의 멤버 넘버를 찾는 쿼리-->
+	<select id="selectEmailMemberFK" resultType="int">
+		SELECT mb_no 
+		FROM FP_MEMBER 
+		WHERE MB_EMAIL = #{mb_email}
+	</select>
+	
+	<!--메일 인증번호 보내기 버튼을 눌렀을때 등록되는 쿼리-->
+	<insert id="insertMailAuth">
+		INSERT INTO FP_MEMBERMAILAUTH VALUES(
+			FP_MemberMailAuth_seq.nextval,
+			#{mb_no},
+			#{auth_key},
+			'N',
+			null
+		)
+	</insert>
+	
+	<!--인증번호가 맞다면 아이디 찾기 버튼을 눌렀을때 업데이트 하는 쿼리-->
+	<update id="updateCompleteY">
+		UPDATE FP_MEMBERMAILAUTH 
+		SET AUTH_COMPLETE = 'Y' , AUTH_DATE = SYSDATE
+		WHERE AUTH_KEY = #{auth_key}
+	</update>	
+	
+	<!--입력한 인증번호의 멤버 넘버를 찾는 쿼리-->
+	<select id="selectAuthKeyMemberFK" resultType="int">
+		SELECT mb_no 
+		FROM FP_MEMBERMAILAUTH 
+		WHERE AUTH_KEY = #{auth_key}
+	</select>
+	
+	<!--인증번호를 확인후 N -> Y로 변경하는 쿼리 -->
+	<select id="selectFindUser" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * 
+		FROM FP_MEMBER fm , FP_MEMBERMAILAUTH fma 
+		WHERE fm.MB_NO = fma.MB_NO
+		AND fma.AUTH_COMPLETE = 'Y'
+		AND fm.MB_NO = #{mb_no}			
+	</select>
+	
+	<!--아이디 찾기,비밀번호 찾기를 한번만 하는것이 아니라 또 까먹고 찾는 경우를 생각해야함.
+	그러니 또 찾을 경우를 대비하여 이전 정보는 초기화 시킴-->
+	<delete id="deleteFindUser">
+		DELETE FROM FP_MEMBERMAILAUTH 
+		WHERE AUTH_COMPLETE = 'Y' AND MB_NO = #{mb_no}
+	</delete>
+	
+	<!--비밀번호 재설정시 쓰이는 쿼리--> 
+	<update id="updateChangeUserPw">
+		UPDATE FP_MEMBER SET mb_pw = #{mb_pw}
+		WHERE mb_no = #{mb_no}
+	</update>
+	
+	<select id="selectStatus" resultType="int">
+		SELECT COUNT(*) FROM FP_USINGSTOP 
+		WHERE reported_person_mb_no = #{mb_no}
+	</select>
+	
+	<select id="selectByNo" resultType="com.sg.freeple.vo.FP_BoardVo">
+		SELECT * 
+		FROM FP_BOARD 
+		WHERE board_no = #{boardNo}
+	</select>
+	
+</mapper>

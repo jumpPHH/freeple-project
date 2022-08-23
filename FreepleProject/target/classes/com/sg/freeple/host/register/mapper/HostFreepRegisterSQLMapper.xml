@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.host.register.mapper.HostFreepRegisterSQLMapper">
+	
+	<!--카테고리 리스트-->
+	<select id="selectFreepCategory" resultType="com.sg.freeple.vo.FP_FreepCategoryVo">
+		SELECT *  
+		FROM FP_FREEPCATEGORY
+	</select>
+	
+	<!-- 프립 넘버 생성 -->
+	<select id="createFreepPK" resultType="int">
+		SELECT FP_Freep_seq.nextval FROM Dual
+	</select>
+	
+	<!-- 프립 등록 -->
+	<insert id="insertFreep">
+		INSERT INTO FP_FREEP VALUES(
+			#{freep_no},
+			#{mb_no},
+			#{freep_ctg_no},
+			#{freep_onoff},
+			#{freep_title},
+			#{freep_time},
+			#{freep_price},
+			null,
+			null,
+			#{freep_content},
+			#{freep_tag},
+			SYSDATE
+		)
+	</insert>
+	
+	<!-- 프립 이미지 등록 -->
+	<insert id="insetFreepImage">
+		INSERT INTO FP_FREEPIMAGE VALUES(
+			FP_FreepImage_seq.nextval,
+			#{freep_no},
+			#{freep_image_link},
+			#{freep_image_original_filename}
+		)
+	</insert>
+	
+</mapper>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sg.freeple.cafe.board.mapper.CafeBoardSQLMapper">
+
+	
+	<!-- 카테고리 -->
+	<select id="createCafeBoardCategory_no" resultType="int">
+		SELECT FP_CafeBoard_Category_seq.nextval FROM dual
+	</select>
+	
+	<insert id="insertCafeBoardCategory">
+		INSERT INTO FP_CafeBoard_Category VALUES(
+		#{cafeBoard_Category_no},
+		#{cafe_no},
+		#{cafeBoard_Category_name}
+		)
+	</insert>
+	
+	<select id="cafeBoardCategoryList" resultType="com.sg.freeple.vo.FP_CafeBoard_CategoryVo">
+		SELECT * FROM FP_CafeBoard_Category WHERE cafe_no=#{cafeNo}
+	</select>
+	
+	<select id="selectcafeBoardCategoryList" resultType="com.sg.freeple.vo.FP_CafeBoard_CategoryVo">
+		SELECT * FROM FP_CafeBoard_Category WHERE cafe_no=#{cafe_no} AND cafeBoard_Category_no=#{cafeBoard_Category_no}
+	</select>
+	
+	<select id="selectCategoryByNo" resultType="com.sg.freeple.vo.FP_CafeBoard_CategoryVo">
+		SELECT * FROM FP_CafeBoard_Category WHERE cafeBoard_Category_no=#{no}
+	</select>
+	
+	<delete id="deleteBoardCategory">
+		DELETE FROM FP_CAFEBOARD_CATEGORY WHERE CAFE_NO = #{cafe_no} AND CAFEBOARD_CATEGORY_NO = #{cafeBoard_Category_no}
+	</delete>
+	
+	<!-- 카페고리 삭제 시 게시판도 삭제 -->
+	<delete id="deleteBoardByCategory">
+		DELETE FROM FP_WRITEBOARD WHERE CAFEBOARD_CATEGORY_NO = #{cafeBoard_Category_no}
+	</delete>
+	
+	<!-- 게시판 -->
+	<select id="createWriteBoardPk" resultType="int">
+		SELECT FP_WriteBoard_seq.nextval FROM dual
+	</select>
+	
+	<insert id="insertCafeBoard">
+		INSERT INTO FP_WriteBoard values(
+		#{writeBoard_no},
+		#{cafeBoard_Category_no},
+		#{cafeMember_no},
+		#{writeBoard_title},
+		#{writeBoard_cotent},
+		SYSDATE,
+		0
+		)
+	</insert>
+	
+	<select id="selectCafeBoardList" resultType="com.sg.freeple.vo.FP_WriteBoardVo">
+		SELECT * FROM FP_WriteBoard WHERE cafeBoard_Category_no =#{no} ORDER BY writeBoard_no DESC
+	</select>
+	
+	<select id="selectCafeBoardByNo" resultType="com.sg.freeple.vo.FP_WriteBoardVo">
+		SELECT * FROM FP_WriteBoard WHERE writeboard_no=#{no}
+	</select>
+
+	<delete id="deleteCafeBoard">
+		delete FROM FP_WRITEBOARD WHERE WRITEBOARD_NO =#{no}
+	</delete>
+	
+	<update id="updateCafeBoard">
+		UPDATE FP_WRITEBOARD SET WRITEBOARD_TITLE = #{writeBoard_title} , WRITEBOARD_COTENT = #{writeBoard_cotent} 
+		WHERE WRITEBOARD_NO = #{writeBoard_no}
+	</update>
+	
+	<update id="increaseReadCount">
+		UPDATE FP_WRITEBOARD SET WRITEBOARD_READCOUNT=WRITEBOARD_READCOUNT+1 
+		WHERE WRITEBOARD_NO = #{no}
+	</update>
+	
+	<!-- 게시판: 전체글 보기 -->
+	<select id="selectFullTextByCafe" resultType="com.sg.freeple.vo.FP_WriteBoardVo">
+		SELECT * FROM FP_CAFEBOARD_CATEGORY fcc ,FP_WRITEBOARD fw 
+		WHERE fcc.CAFEBOARD_CATEGORY_NO =fw.CAFEBOARD_CATEGORY_NO
+		AND fcc.CAFE_NO = #{cafeNo} ORDER BY writeBoard_no DESC
+	</select>
+	<!-- 게시글: 전체 글 수 -->
+	<select id="countTotalText" resultType="int">
+		SELECT count(*) FROM FP_CAFEBOARD_CATEGORY fcc ,FP_WRITEBOARD fw WHERE 
+		fcc.CAFEBOARD_CATEGORY_NO = fw.CAFEBOARD_CATEGORY_NO 
+		AND fcc.CAFE_NO = #{cafeNo}
+	</select>
+	
+	<!-- 게시글: 게시판 글수  -->
+	<select id="countTextByCategory" resultType="int">
+		SELECT count(*) FROM FP_CAFEBOARD_CATEGORY fcc ,FP_WRITEBOARD fw WHERE 
+		fcc.CAFEBOARD_CATEGORY_NO = fw.CAFEBOARD_CATEGORY_NO 
+		AND fcc.CAFE_NO =#{cafe_no} AND fcc.CAFEBOARD_CATEGORY_NO = #{cafeBoard_Category_no}
+	</select>
+	
+	<!-- 게시판이미지 -->
+	<insert id="insertCafeBoImage">
+		INSERT INTO FP_CafeBoardImage VALUES(
+		FP_CafeBoardImage_seq.nextval,
+		#{writeBoard_no},
+		#{cafeBoImage_link},
+		#{cafeBoImage_original_filename}
+		)
+	</insert>
+	
+	<select id="selectCafeBoImageByNo" resultType="com.sg.freeple.vo.FP_CafeBoardImageVo">
+		SELECT * FROM FP_CafeBoardImage WHERE writeBoard_no = #{boardNo}
+	</select>
+	<!-- 댓글 -->
+	<insert id="insertComment">
+		INSERT INTO FP_cafe_comment VALUES(
+		FP_cafe_comment_seq.nextval,
+		#{cafeMember_no},
+		#{writeBoard_no},
+		#{cafeComment_content},
+		SYSDATE
+	)
+	</insert>
+	
+	<select id="selectCommentListByBoardNo" resultType="com.sg.freeple.vo.FP_CafeCommentVo">
+		SELECT * FROM fP_cafe_comment WHERE writeBoard_no= #{boardNo}
+	</select>
+	
+	<delete id="deleteComment">
+		DELETE FROM FP_CAFE_COMMENT WHERE CAFECOMMENT_NO  = #{no}
+	</delete>
+	
+	<delete id="deleteCommentByBoard">
+		DELETE FROM FP_CAFE_COMMENT WHERE WRITEBOARD_NO =#{boardNo}
+	</delete>
+	
+	<update id="updateComment">
+		UPDATE FP_CAFE_COMMENT SET CAFECOMMENT_CONTENT = #{cafeComment_content} 
+		WHERE CAFECOMMENT_NO =#{cafeComment_no}
+	</update>
+	
+	<select id="countCommentByBoardNo" resultType="int">
+		SELECT count(*) FROM FP_CAFE_COMMENT WHERE WRITEBOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 좋아요 -->
+	<insert id="insertLike">
+		INSERT INTO FP_cafeBoard_like VALUES(
+		FP_cafeBoard_like_seq.nextval,
+		#{cafeMember_no},
+		#{writeBoard_no},
+		#{cafe_no},
+		SYSDATE
+		)
+	</insert>
+	
+	<delete id="deleteLike">
+		DELETE FROM FP_cafeBoard_like WHERE cafeMember_no= #{cafeMember_no} AND writeBoard_no= #{writeBoard_no}
+	</delete>
+	
+	<select id="selectTotalLikeCount" resultType="int">
+		SELECT count(*) FROM FP_cafeBoard_like WHERE writeBoard_no= #{boardNO}
+	</select>
+	
+	<select id="selectMyLikeCheck" resultType="int">
+		SELECT count(*) FROM FP_cafeBoard_like WHERE cafeMember_no= #{cafeMember_no} AND writeBoard_no=#{writeBoard_no}
+	</select>
+</mapper>
+
+
+
+
+
+
+

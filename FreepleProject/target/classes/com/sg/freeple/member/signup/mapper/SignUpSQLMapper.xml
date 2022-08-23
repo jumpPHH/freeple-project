@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sg.freeple.member.signup.mapper.SignUpSQLMapper">
+	
+
+	<!--회원가입 할때 쓰이는 등록 쿼리-->
+	<insert id="insertMember">
+		INSERT INTO FP_MEMBER VALUES(
+			#{mb_no}, 
+			#{mb_id},
+			#{mb_pw},
+			#{mb_nick},
+			#{mb_gender},
+			#{mb_phone},
+			#{mb_email},
+			#{mb_image_link},
+			#{mb_image_original_filename},
+			'나를 소개해주세요.',
+			#{mb_birth},
+			SYSDATE,
+			'2022-07-15'
+		)
+	</insert>
+	
+	<!--회원가입 할시.. 먼져 생성해줄 멤버 넘버-->
+	<select id="createMemberPK" resultType="int">
+		SELECT FP_MEMBER_seq.nextval FROM Dual
+	</select>
+	
+	<!--회원가입 -> 이메일 정보 등록되는 쿼리-->
+	<insert id="insertMailAuth">
+		INSERT INTO FP_MEMBERMAILAUTH VALUES(
+			FP_MemberMailAuth_seq.nextval,
+			#{mb_no},
+			#{auth_key},
+			'X',
+			null
+		)
+	</insert>
+	
+	<!--회원가입 -> 이메일 -> 인증링크를 눌렀을때 업데이트 하는 쿼리-->
+	<update id="updateCompleteO">
+		UPDATE FP_MEMBERMAILAUTH
+		SET AUTH_COMPLETE = 'O' , AUTH_DATE = SYSDATE
+		WHERE AUTH_KEY = #{auth_key}
+	</update>	
+
+	
+</mapper>

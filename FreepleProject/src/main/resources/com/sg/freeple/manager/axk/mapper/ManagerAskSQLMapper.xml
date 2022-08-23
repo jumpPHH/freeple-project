@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.manager.ask.mapper.ManagerAskSQLMapper">
+	<select id="selectNo" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * FROM FP_MEMBER WHERE MB_NO = #{mb_no}
+	</select>
+	
+	<select id="selectAll" resultType="com.sg.freeple.vo.FP_MemberToManagerAskVo">
+		SELECT t2.* FROM (		
+			SELECT t1.* , ROWNUM AS rnum FROM (
+				SELECT fmtma.* 
+				FROM FP_MemberToManagerAsk fmtma
+				ORDER BY fmtma.mb_mng_ask_no DESC
+			) t1
+		) t2
+		<![CDATA[ 
+		WHERE t2.rnum >= (#{pageNum}-1)*10+1 AND t2.rnum <= #{pageNum} * 10
+		]]>
+	</select>
+
+	<select id="selectAskCount" resultType="int">
+		SELECT COUNT(*) FROM FP_MemberToManagerAsk
+	</select>
+	
+	<update id="updateVo">
+		UPDATE FP_MemberToManagerAsk
+		SET mb_mng_answer_content = #{mb_mng_answer_content},
+		mng_no = #{mng_no},
+		mb_mng_ask_status = '답변완료',
+		mb_mng_answer_date = sysdate
+		WHERE mb_mng_ask_no = #{mb_mng_ask_no}
+	</update>
+	
+
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.host.profile.mapper.HostProfileSQLMapper">
+		
+	<update id="updateHostProfileDate">
+		UPDATE FP_MEMBER 
+		SET MB_IMAGE_LINK  = #{mb_image_link} , 
+		MB_IMAGE_ORIGINAL_FILENAME = #{mb_image_original_filename} ,
+		MB_NICK = #{mb_nick} ,
+		MB_EMAIL = #{mb_email} ,
+		MB_HOST_INFO = #{mb_host_info}  
+		WHERE mb_no  = #{mb_no}
+	</update>
+	
+
+</mapper>

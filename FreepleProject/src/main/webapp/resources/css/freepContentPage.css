@@ -1,0 +1,126 @@
+@charset "UTF-8";
+
+.cWsrnE { /*프립 제목*/
+    margin: 0px;
+    max-width: 320px;
+    line-height: 28px;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.6px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    color: rgb(51, 51, 51);
+}
+
+.iRfDsw { /*프립 강의금액*/
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 36px;
+    letter-spacing: -0.72px;
+    color: rgb(51, 51, 51);
+    margin-right: 6px;
+}
+
+.kWprXL { /*프립 강의금액 (원)*/
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: -0.42px;
+    color: rgb(51, 51, 51);
+}
+
+.hEglGi { /*프립 호스트 라운드 이미지*/
+    margin-right: 20px;
+    overflow: hidden;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 28px;
+}
+
+.jYAYJP { /*프립 호스트 닉네임*/
+    font-weight: bold;
+    font-size: 18px; 
+    color: rgb(51, 51, 51);
+}
+
+.cUDkmC { /*프립 호스트 닉네임 하단부*/
+    margin-top: 2px;
+    color: rgb(170, 170, 170);
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.36px;
+}
+
+.eZGjgL { /*프립 호스트 북마크 이미지*/
+    width: 32px;
+    height: 32px;
+    line-height: normal;
+    padding: 0px;
+    background-color: transparent;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+.jFAUTZ { /*프립 호스트 탑,바텀 선*/
+	border-bottom: 1px solid rgb(238, 238, 238);
+    border-top: 1px solid rgb(238, 238, 238);
+}
+.gdIWGV {
+    padding-top: 24px;
+    border-top: 1px solid rgb(244, 244, 244);
+    border-bottom: 1px solid rgb(244, 244, 244);
+    background-color: rgb(250, 250, 250);
+    overflow: hidden;
+} 
+
+.bZNoYF {
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 24px;
+    margin: 0px;
+}
+
+.bremOa {
+	padding: 40px 0px;
+	border-top: 1px solid rgb(238, 238, 238);
+	border-bottom: none;
+}
+
+.jXxsiv {
+    padding: 6px 11px;
+    color: rgb(0, 69, 24);
+    border: 1px solid rgb(155, 212, 145);
+    border-radius: 20px;
+    background-color: rgb(251, 255, 245);
+}
+
+
+
+.item{
+  display: block; /* 인터넷 익스플로러 호환 */
+  display: -webkit-box;
+  overflow: hidden;
+  line-height: 1.7;
+   max-height: 3.4em; /* 인터넷 익스플로러 호환 */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis; /* CSS4에서 추가될 말줄임표 사용자 정의 */
+}
+
+.zoom_image:hover{
+	transform: scale(1.5);
+	transtion: .5x;
+}
+
+
+
+

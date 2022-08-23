@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.board.mapper.FreeBoardSQLMapper">
+
+	<select id="createBoardPk" resultType="int">
+		SELECT FP_Board_seq.nextval FROM Dual
+	</select>
+	
+	<select id="createCommentPk" resultType="int">
+		SELECT FP_Comment_seq.nextval FROM Dual
+	</select>
+
+	<insert id="insertBoard">
+		INSERT INTO FP_Board VALUES(
+			#{board_no},
+			#{mb_no},
+			#{board_title},
+			#{board_content},
+			0,
+			SYSDATE
+		)		
+	</insert>
+	
+	<select id="selectAll" resultType="com.sg.freeple.vo.FP_BoardVo">
+		SELECT t2.* FROM(
+			SELECT t1.* , ROWNUM as rnum FROM (
+				SELECT fb.*
+				FROM FP_BOARD fb , FP_MEMBER fm
+				WHERE fb.MB_NO = fm.MB_NO
+				<if test="searchType != null and searchWord != null">
+					<choose>
+						<when test="searchType == 'title'">
+							AND fb.BOARD_TITLE LIKE '%' || #{searchWord} || '%'
+						</when>
+						<when test="searchType == 'content'">
+							AND fb.BOARD_CONTENT LIKE '%' || #{searchWord} || '%'
+						</when>
+						<when test="searchType == 'nickname'">
+							AND fm.MEMBER_NICK LIKE '%' || #{searchWord} || '%'
+						</when>
+					</choose>
+					</if>
+					ORDER BY fb.BOARD_NO DESC
+				) t1
+			) t2
+			<![CDATA[
+			WHERE t2.rnum >= (#{pageNum}-1)*10+1 AND t2.rnum <= #{pageNum}*10
+			]]>
+	</select>
+	
+	<select id="selectCount" resultType="int">
+		SELECT COUNT(*)
+		FROM FP_BOARD fb, FP_MEMBER fm
+		WHERE fb.MB_NO = fm.MB_NO
+		<if test="searchType != null and searchWord != null">
+			<choose>
+				<when test="searchType == 'title'">
+					AND fb.BOARD_TITLE LIKE '%' || #{searchWord} || '%'
+				</when>
+				<when test="searchType == 'content'">
+					AND fb.BOARD_CONTENT LIKE '%' || #{searchWord} || '%'
+				</when>
+				<when test="searchType == 'nickname'">
+					AND fm.MEMBER_NICK LIKE '%' || #{searchWord} || '%'
+				</when>
+			</choose>
+		</if>
+	</select>
+
+	<select id="selectByNo" resultType="com.sg.freeple.vo.FP_BoardVo">
+		SELECT * 
+		FROM FP_BOARD 
+		WHERE board_no = #{boardNo}
+	</select>
+	
+	<update id="increaseReadCount">
+		UPDATE FP_BOARD 
+		SET board_readcount = board_readcount + 1 
+		WHERE board_no = #{boardNo}
+	</update>
+
+	<delete id="deleteByNo">
+		DELETE FROM FP_BOARD 
+		WHERE board_no = #{boardNo}
+	</delete>
+	
+	<update id="updateTitleAndContent">
+		UPDATE FP_Board 
+		SET board_title = #{board_title} , board_content = #{board_content}
+		WHERE board_no = #{board_no}		
+	</update>
+	
+	<insert id="insertImage">
+		INSERT INTO FP_BoardImage VALUES(
+			FP_BoardImage_seq.nextval,
+			#{board_no},
+			#{image_link},
+			#{image_original_filename}
+		)
+	</insert>
+	
+	<select id="selectBoardImage" resultType="com.sg.freeple.vo.FP_BoardImageVo">
+		SELECT * FROM FP_BoardImage WHERE board_no = #{boardNo}
+	</select>
+
+	<insert id="insertLike">
+		INSERT INTO FP_BOARDLIKE VALUES(
+			FP_BOARDLike_seq.nextval,
+			#{mb_no},
+			#{board_no},
+			SYSDATE
+		)
+	</insert>
+	
+	<delete id="deleteLike">
+		DELETE FROM FP_BOARDLike
+		WHERE mb_no = #{mb_no}
+		AND board_no = #{board_no}
+	</delete>
+
+	<select id="selectTotalLikeCount" resultType="int">
+		SELECT COUNT(*) FROM FP_BOARDLIKE WHERE board_no = #{board_no}
+	</select> 
+
+	<select id="selectMyLikeCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM FP_BOARDLIKE
+		WHERE mb_no = #{mb_no}
+		AND board_no = #{board_no}
+	</select>
+	
+	<insert id="insertComment">
+		INSERT INTO FP_Comment VALUES(
+			FP_comment_seq.nextval,
+			#{mb_no},
+			#{board_no},
+			#{comment_content}, 
+			SYSDATE
+		)		
+	</insert>
+	
+	<select id="selectCommentList" resultType="com.sg.freeple.vo.FP_FreeBoardCommentVo">
+		SELECT * FROM FP_Comment
+		WHERE Board_no = #{board_no}
+		ORDER by Comment_no ASC
+	</select>
+	
+	<delete id="deleteComment">
+		DELETE FROM FP_Comment
+		WHERE Comment_no = #{comment_no}
+	</delete>
+	
+	<select id="selectCommentCount" resultType="int">
+		SELECT COUNT(*) 		
+		FROM FP_Comment 
+		WHERE board_no = #{board_no}
+	</select>
+
+</mapper>

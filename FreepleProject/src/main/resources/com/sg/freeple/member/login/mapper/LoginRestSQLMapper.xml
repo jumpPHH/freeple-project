@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sg.freeple.member.login.mapper.LoginRestSQLMapper">
+	
+	<!--로그인 ID,PW를 찾는 쿼리-->
+	<select id="getEmail" resultType="string"> 
+		SELECT MB_EMAIL 
+		FROM FP_MEMBER 
+		WHERE MB_EMAIL = #{mb_email}
+	</select>
+	
+	<!--이메일 인증번호가 맞는지 확인하는 쿼리-->
+	<select id="getAuthKey" resultType="string">
+		SELECT AUTH_KEY 
+		FROM FP_MEMBERMAILAUTH 
+		WHERE AUTH_KEY = #{auth_key}
+	</select>
+	
+	<select id="getId" resultType="string">
+		SELECT MB_ID
+		FROM FP_MEMBER
+		WHERE MB_ID = #{mb_id}
+	</select>
+	
+	<select id="getPw" resultType="int">
+		SELECT COUNT(*)
+		FROM FP_MEMBER
+		WHERE MB_PW = #{mb_pw}
+	</select>
+	
+</mapper>

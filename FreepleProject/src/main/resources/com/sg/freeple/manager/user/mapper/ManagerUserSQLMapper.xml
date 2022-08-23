@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sg.freeple.manager.user.mapper.ManagerUserSQLMapper">
+
+	<select id="selectList" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * FROM FP_MEMBER fm
+	</select>
+	
+	<select id="selectReported" resultType="com.sg.freeple.vo.FP_ReportVo">
+		SELECT * FROM FP_report
+		WHERE reported_person_status = '제제필요'
+	</select>
+
+	<select id="selectReportedNo" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * FROM FP_MEMBER
+		WHERE mb_no = #{reported_person_mb_no}
+	</select>
+	
+	<select id="selectReportNo" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * FROM FP_MEMBER
+		WHERE mb_no = #{report_mb_no}
+	</select>
+	
+	<select id="reportedCount" resultType="int">
+		SELECT COUNT(*) FROM FP_REPORT 
+		WHERE reported_person_mb_no = #{reported_person_mb_no}
+	</select>
+	 
+	<update id="updateNo">
+		UPDATE FP_REPORT  
+		SET reported_person_status = '제제완료'
+		WHERE reported_person_mb_no = #{reported_person_mb_no}
+	</update>	
+	
+	<insert id="insertStopNo3">
+		INSERT INTO FP_USINGSTOP values(
+			FP_USINGSTOP_seq.nextval,
+			#{reported_person_mb_no},
+			#{mng_no},
+			'3일정지',
+			sysdate
+		)
+	</insert>
+	
+	<insert id="insertStopNo7">
+		INSERT INTO FP_USINGSTOP values(
+			FP_USINGSTOP_seq.nextval,
+			#{reported_person_mb_no},
+			#{mng_no},
+			'7일정지',
+			sysdate
+		)
+	</insert>
+	
+	<insert id="insertStopNo15">
+		INSERT INTO FP_USINGSTOP values(
+			FP_USINGSTOP_seq.nextval,
+			#{reported_person_mb_no},
+			#{mng_no},
+			'15일정지',
+			sysdate
+		)
+	</insert>
+	
+	<select id="stopUser" resultType="com.sg.freeple.vo.FP_UsingStopVo">
+		SELECT * FROM FP_UsingStop
+	</select>
+	
+	<delete id="deleteStopUserbyMbNo">
+		DELETE FROM FP_UsingStop
+		WHERE reported_person_mb_no = #{reported_person_mb_no}
+	</delete>
+	
+<!-- 	<delete id="deleteReportedByMbNo"> -->
+<!-- 		DELETE FROM FP_REPORT -->
+<!-- 		WHERE reported_person_mb_no = #{reported_person_mb_no} -->
+<!-- 	</delete> -->
+	
+	
+
+</mapper>

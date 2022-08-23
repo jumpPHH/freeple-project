@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sg.freeple.cafe.mapper.CafeSQLMapper">
+
+	<select id="selectByMemberNo" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * FROM FP_MEMBER WHERE MB_NO = #{memberNo}
+	</select>
+	
+	<select id="createCafeMemberPK" resultType="int">
+		SELECT FP_cafeMember_seq.nextval FROM dual
+	</select>
+	
+	<insert id="insertCafeMember">
+		INSERT INTO FP_cafeMember values(
+		#{cafeMember_no},
+		#{cafe_no},
+		#{mb_no},
+		#{cafe_grade},
+		#{cafeMember_nickname}
+		)
+	</insert>
+		
+	<select id="createCafePK" resultType="int">
+		SELECT FP_cafe_seq.nextval FROM dual
+	</select>
+	
+	<insert id="createCafe">
+		INSERT INTO FP_Cafe values(
+		#{cafe_no},
+		#{cafeMember_no},
+		#{cafe_name},
+		#{cafeIntroduce_content},
+		#{cafeMember_limit},
+		#{cafe_image_link},
+		#{cafe_image_original_filename},
+		SYSDATE
+		)
+	</insert>
+	
+	<select id="allCafeList"  resultType="com.sg.freeple.vo.FP_CafeVo">
+		SELECT * FROM FP_Cafe
+	</select>
+	
+	<select id="selectCafeByNo" resultType="com.sg.freeple.vo.FP_CafeVo">
+		SELECT * FROM fp_cafe WHERE CAFE_NO =#{cafeNo}
+	</select>
+
+	<select id="allCafeMemberList" resultType="com.sg.freeple.vo.FP_CafeMemberVo">
+		select * from fp_cafeMember WHERE CAFE_NO = #{cafe_no}
+	</select>
+	<!-- 카페멤버 NO로 확인 -->
+	<select id="selectCafeMemberByNo" resultType="com.sg.freeple.vo.FP_CafeMemberVo">
+		SELECT * FROM FP_CAFEMember WHERE cafeMember_no= #{no}
+	</select>
+	
+	<select id="selectCafeMemberByMemberNo" resultType="com.sg.freeple.vo.FP_CafeMemberVo">
+		SELECT * FROM FP_CAFEMember WHERE mb_no= #{mb_no} AND cafe_no=#{cafe_no}
+	</select>
+	
+	<!-- 카페멤버 수 확인 -->
+	<select id="countCafeMember" resultType="int">
+		SELECT COUNT(*) FROM FP_CAFEMEMBER WHERE cafe_no= #{no}
+	</select>
+	
+	<insert id="insertRequestToJoin">
+		INSERT INTO FP_RequestToJoin VALUES(
+		FP_RequestToJoin_seq.nextval,
+		#{cafe_no},
+		#{mb_no},
+		'N',
+		#{requestToJoin_coment},
+		SYSDATE,
+		null
+		)
+	</insert>
+	
+	<select id="selectRequestToJoin" resultType="com.sg.freeple.vo.FP_RequestToJoinVo">
+		SELECT * FROM FP_RequestToJoin WHERE CAFE_NO = #{cafeNo}
+	</select>
+	
+	<select id="selectRequestToJoinByNo" resultType="com.sg.freeple.vo.FP_RequestToJoinVo">
+		SELECT * FROM FP_REQUESTTOJOIN WHERE requestToJoin_no =#{joinNo}
+	</select>
+	
+	<update id="updateAcceptDate">
+		UPDATE FP_REQUESTTOJOIN SET accpetToJoin_date = SYSDATE, requestToJoin_approval = 'Y'
+		WHERE accpetToJoin_date IS NULL AND mb_no= #{mb_no} AND cafe_no= #{cafe_no}
+	</update>
+	
+	<select id="requestTojoinCount" resultType="int">
+		SELECT COUNT(*) FROM FP_REQUESTTOJOIN WHERE CAFE_NO = #{cafeNo}
+	</select>
+	
+	<select id="cafeMemberCount" resultType="int">
+		SELECT COUNT(*) FROM FP_REQUESTTOJOIN WHERE mb_no= #{mb_no} AND CAFE_NO =#{cafe_no}
+	</select>
+	
+	<!-- 회원가입 수락일 가져오기 -->
+	<select id="selectAcceptDate" resultType="com.sg.freeple.vo.FP_RequestToJoinVo">
+		SELECT * FROM FP_REQUESTTOJOIN WHERE cafe_no=#{cafe_no} AND MB_NO =#{mb_no}
+	</select>
+
+	<!-- 카페멤버가 쓴 게시글 수 -->
+	<select id="countBoardByCafeMember" resultType="int">
+		SELECT COUNT(*) FROM FP_CAFEBOARD_CATEGORY fcc,FP_WRITEBOARD fw 
+		WHERE 
+		fcc.CAFEBOARD_CATEGORY_NO = fw.CAFEBOARD_CATEGORY_NO 
+		AND fcc.CAFE_NO = #{cafe_no} AND fw.CAFEMEMBER_NO =#{cafeMember_no}
+	</select>
+	
+	<!-- 멤버가 쓴 댓글 총 수 -->
+	<select id="countCommnetByMember" resultType="int">
+		SELECT count(*) FROM FP_CAFE_COMMENT fcc, FP_WRITEBOARD fw, FP_CAFEBOARD_CATEGORY fcc2
+		WHERE fcc.WRITEBOARD_NO = fw.WRITEBOARD_NO AND fw.CAFEBOARD_CATEGORY_NO =fcc2.CAFEBOARD_CATEGORY_NO 
+		AND fcc2.CAFE_NO = #{cafe_no} AND fcc.CAFEMEMBER_NO = #{cafeMember_no}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

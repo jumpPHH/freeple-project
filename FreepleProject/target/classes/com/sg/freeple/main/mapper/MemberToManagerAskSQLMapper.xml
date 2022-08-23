@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sg.freeple.main.mapper.MemberToManagerAskSQLMapper">
+	<insert id="insertToManagerAsk">
+		INSERT INTO FP_MemberTOMANAGERASk VALUES(
+			FP_MemberToManagerAsk_seq.nextval,
+			#{mb_no},
+			'',
+			#{mb_mng_ask_title},
+			#{mb_mng_ask_content},
+			'',
+			'답변대기',
+			Sysdate,
+			''
+		)
+	</insert>
+	
+	<select id="selectAll" resultType="com.sg.freeple.vo.FP_MemberToManagerAskVo">
+		SELECT t2.* FROM (
+			SELECT t1.* ,ROWNUM AS rnum FROM (
+				SELECT fmtma.*  
+				FROM FP_MemberToManagerAsk fmtma 
+				WHERE mb_no = #{mb_no} 
+				ORDER BY fmtma.mb_mng_ask_no DESC 
+				)t1 
+		)t2
+		<![CDATA[ 
+		WHERE t2.rnum >= (#{pageNum}-1)*10+1 AND t2.rnum <= #{pageNum} * 10
+		]]>		 
+	</select>
+
+	<select id="selectAskCount" resultType="int">
+		SELECT COUNT(*) FROM FP_MemberToManagerAsk
+		WHERE mb_no = #{mb_no }
+	</select>
+	
+	<select id="selectNo" resultType="com.sg.freeple.vo.FP_MemberVo">
+		SELECT * FROM FP_MEMBER WHERE MB_NO = #{mb_no }
+	</select>
+	
+	<select id="selectAsk" resultType="com.sg.freeple.vo.FP_MemberToManagerAskVo">
+		SELECT * FROM FP_MemberToManagerAsk WHERE mb_mng_ask_no = #{mb_mng_ask_no}
+	</select>
+	
+	<delete id="deleteNo">
+		DELETE FROM FP_MEMBERTOMANAGERASK WHERE mb_mng_ask_no = #{mb_mng_ask_no}
+	</delete>
+	
+	<update id="updateNo">
+		UPDATE FP_MEMBERTOMANAGERASK 
+		SET mb_mng_ask_title = #{mb_mng_ask_title} ,
+		mb_mng_ask_content = #{mb_mng_ask_content} ,
+	    mb_mng_ask_date = SYSDATE
+		WHERE mb_mng_ask_no = #{mb_mng_ask_no}
+	</update>
+</mapper>
