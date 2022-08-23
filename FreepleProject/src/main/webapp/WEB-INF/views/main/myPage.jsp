@@ -153,7 +153,7 @@ $(function() {
 			</div>
 
 				
-			버그버ㄱㅂㅈㄱㅂㅈ
+			버그버ㄱㅂㅈㄱㅂㅈ3252323623626
 	<div class="rightSideBar"></div>
 </div>
 		
