@@ -151,11 +151,16 @@ $(function() {
 			<div class="col">
 				<a href="" class="btn d-grid" style="text-align: left"><strong>약관 및 정책</strong></a>
 			</div>
-				
-			버그버그
-	</div>
+		</div>다시보내줄게
+	<button>ㅗㅗㅗㅗㅗㅗ</button>		ㅇㅁㅇㅁㄴㄴㅇ
+	</div>ㄴㅇㄹㄴㄹ
 	<div class="rightSideBar"></div>
 </div>
+		
+		
+		
+				
+
 
 <jsp:include page="../global/mainBottom.jsp"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
