@@ -153,11 +153,9 @@ $(function() {
 			</div>
 
 				
-<<<<<<< HEAD
-				내가 변경함 222222
-=======
+
 				내가 변경함 2223333
->>>>>>> b27b79fa32608094dc7d1112103117d69a82b5f5
+
 	<div class="rightSideBar"></div>
 </div>
 		
