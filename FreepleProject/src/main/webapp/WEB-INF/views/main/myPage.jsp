@@ -153,7 +153,7 @@ $(function() {
 			</div>
 
 				
-				안요섭이 변경함
+				내가 변경함 
 	<div class="rightSideBar"></div>
 </div>
 		
